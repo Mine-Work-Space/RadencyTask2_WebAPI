@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33402.96
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2.PL", "Task2_WebAPI\Task2.PL.csproj", "{227FFEA2-313A-42D9-B8A2-E6BAF1077720}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2.DAL", "ModelsLibrary\Task2.DAL.csproj", "{E0D4628C-961E-411E-A78C-A83F035C3314}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2.BLL", "Task2.BLL\Task2.BLL.csproj", "{87DCA080-210D-42F8-8573-B45CB5AD674D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{227FFEA2-313A-42D9-B8A2-E6BAF1077720}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{227FFEA2-313A-42D9-B8A2-E6BAF1077720}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{227FFEA2-313A-42D9-B8A2-E6BAF1077720}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{227FFEA2-313A-42D9-B8A2-E6BAF1077720}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0D4628C-961E-411E-A78C-A83F035C3314}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D4628C-961E-411E-A78C-A83F035C3314}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D4628C-961E-411E-A78C-A83F035C3314}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D4628C-961E-411E-A78C-A83F035C3314}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87DCA080-210D-42F8-8573-B45CB5AD674D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87DCA080-210D-42F8-8573-B45CB5AD674D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87DCA080-210D-42F8-8573-B45CB5AD674D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87DCA080-210D-42F8-8573-B45CB5AD674D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E3D47E2-8F1C-4008-BE8E-AD103ECDC50A}
+	EndGlobalSection
+EndGlobal
