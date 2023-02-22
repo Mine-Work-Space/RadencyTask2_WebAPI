@@ -5,7 +5,7 @@ namespace Task2.DAL.DbModels
 {
     public class Review
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "{0} is required.")]
         [StringLength(512, MinimumLength = 3, ErrorMessage = "Message must be minimum {1} characters and a maximum of {0} characters")]
@@ -13,7 +13,7 @@ namespace Task2.DAL.DbModels
         public string Message { get; set; } = string.Empty;
 
         [ForeignKey(nameof(Book))]
-        public Guid? BookId { get; set; } // 0 to many
+        public int? BookId { get; set; } // 0 to many
         public virtual Book? Book { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Reviewer must have at least 1 character")]
