@@ -1,3 +1,7 @@
+using Task2.BLL;
+using Task2.BLL.Implementations;
+using Task2.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,14 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+// Seed data to in memory db
+ContextSeed.Seed(new ApiContext());
+// Add services
+builder.Services.AddScoped<BookRepository>();
+builder.Services.AddScoped<RateRepository>();
+builder.Services.AddScoped<ReviewRepository>();
 
 var app = builder.Build();
 

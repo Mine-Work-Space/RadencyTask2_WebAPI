@@ -4,7 +4,7 @@ namespace Task2.DAL.DbModels
 {
     public class Book
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         
         [Required(ErrorMessage = "{0} is required.")]
         [StringLength(256, MinimumLength = 1, ErrorMessage = "Title must be minimum {1} characters and a maximum of {0} characters")]
@@ -28,6 +28,6 @@ namespace Task2.DAL.DbModels
         public string Genre { get; set; } = string.Empty;
 
         public virtual IEnumerable<Rating>? Ratings { get; set; }
-        public virtual IEnumerable<Review>? Review { get; set; }
+        public virtual IEnumerable<Review>? Reviews { get; set; }
     }
 }
