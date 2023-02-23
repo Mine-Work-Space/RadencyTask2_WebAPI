@@ -7,10 +7,10 @@ using Task2.DAL.DbModels;
 
 namespace Task2.BLL.Interfaces {
     internal interface IBookInterface {
-        Task<List<Book>> GetAllBooksByValue(string value);
-        Task<List<Book>> GetTop10BooksByRatingAndReviews(string genre);
-        Task<Book?> GetBook(int id);
-        void DeleteBook(int id, string secretKey);
-        Task<int> SaveBook(Book book);
+        Task<List<Book>> GetAllBooksByValueAsync(string value);
+        Task<List<Book>> GetTop10BooksByRatingAndReviewsAsync(string genre);
+        Task<Book?> GetBookByIdAsync(int id);
+        bool DeleteBook(int id);
+        Task<int> SaveBookAsync(Book book);
     }
 }
