@@ -10,7 +10,9 @@ namespace Task2.BLL.Interfaces {
         Task<List<Book>> GetAllBooksByValueAsync(string value);
         Task<List<Book>> GetTop10BooksByRatingAndReviewsAsync(string genre);
         Task<Book?> GetBookByIdAsync(int id);
-        bool DeleteBook(int id);
+        Task<bool> DeleteBookAsync(int id);
         Task<int> SaveBookAsync(Book book);
+        Task<int> SaveReviewAsync(int bookId, Review review);
+        Task RateBook(int bookId, decimal score);
     }
 }

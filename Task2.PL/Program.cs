@@ -1,6 +1,6 @@
-using Task2.BLL;
 using Task2.BLL.Implementations;
 using Task2.DAL;
+using Task2.PL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,12 +12,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+// Use build-in logger
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 // Seed data to in memory db
 ContextSeed.Seed(new ApiContext());
 // Add services
 builder.Services.AddScoped<BookRepository>();
 builder.Services.AddScoped<RateRepository>();
 builder.Services.AddScoped<ReviewRepository>();
+
 
 var app = builder.Build();
 
