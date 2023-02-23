@@ -24,10 +24,15 @@ namespace Task2.BLL.Implementations {
         }
 
         public async Task<List<Book>> GetAllBooksByValueAsync(string value) {
-            return await _dbManager.Books.Where(b => b.Author == value || b.Title == value)
+            var books =  await _dbManager.Books
                 .Include("Ratings")
                 .Include("Reviews")
                 .ToListAsync();
+            if (value == "title")
+                books = books.OrderBy(x => x.Title).ToList();
+            if (value == "author")
+                books = books.OrderBy(x => x.Author).ToList();
+            return books;
         }
 
         public async Task<Book?> GetBookByIdAsync(int id) {
@@ -47,11 +52,15 @@ namespace Task2.BLL.Implementations {
                 .ToListAsync();
         }
 
-        public async Task RateBook(int bookId, decimal score) {
+        public async Task<bool> RateBook(int bookId, decimal score) {
             var book = await _dbManager.Books.FindAsync(bookId);
             if(book != null) {
                 await _dbManager.Ratings.AddAsync(new Rating() { BookId = book.Id, Score = score });
                 await _dbManager.SaveChangesAsync();
+                return true;
+            }
+            else {
+                return false;
             }
         }
 

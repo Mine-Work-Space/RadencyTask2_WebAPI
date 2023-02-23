@@ -8,7 +8,7 @@ namespace Task2.ModelsLibrary {
         public decimal Rating { get; set; } = 0.0M;
         public int ReviewsNumber { get; set; } = 0;
         public override string ToString() {
-            return $"\n{{ {Id}, {Title}, {Author}, {Rating}, {ReviewsNumber} }}";
+            return $"\n{{ Id '{Id}', Title '{Title}', Author '{Author}', Rating '{Rating}', ReviewsNumber '{ReviewsNumber}' }}";
         }
     }
 }

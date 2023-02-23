@@ -18,7 +18,7 @@ namespace Task2.ModelsLibrary {
             foreach (ReviewDTO review in Reviews) {
                 sb.Append(review.ToString());
             }
-            return $"{{ BookWithReviewsDTO: {Id}, {Title}, {Author}, {Cover}, {Content}, {Rating} \n" + sb.ToString() + "} ";
+            return $"{{ BookWithReviewsDTO: Id '{Id}', Title '{Title}', Author '{Author}', Cover '{Cover}', Content '{Content}', Rating '{Rating}' \n REVIEWS: " + sb.ToString() + "} ";
         }
     }
 }

@@ -13,6 +13,6 @@ namespace Task2.BLL.Interfaces {
         Task<bool> DeleteBookAsync(int id);
         Task<int> SaveBookAsync(Book book);
         Task<int> SaveReviewAsync(int bookId, Review review);
-        Task RateBook(int bookId, decimal score);
+        Task<bool> RateBook(int bookId, decimal score);
     }
 }

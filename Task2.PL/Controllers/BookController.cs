@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 using System.Text;
 using System.Text.Json.Nodes;
@@ -18,6 +20,7 @@ namespace Task2.PL.Controllers {
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
         private string _logMessage;
+
         public BookController(BookRepository bookRepository, IMapper mapper, IConfiguration config, ILogger<BookController> logger) {
             _bookRepository = bookRepository;
             _mapper = mapper;
@@ -28,62 +31,77 @@ namespace Task2.PL.Controllers {
 
         [HttpGet("books")]
         public async Task<ActionResult<IEnumerable<Book>>> GetAllBooks(string? order) {
-            _logger.LogInformation("Method: GetAllBooks");
             if (String.IsNullOrWhiteSpace(order)) {
                 _logMessage = "Input book title or author name.";
-                _logger.LogError("\t" + _logMessage + " Order string is empty.");
+                Log("GetAllBooks", _logMessage + " Order string is empty.", false);
+                return BadRequest(_logMessage);
+            }
+            if(order != "author" || order != "title") { // !!
+                _logMessage = "Order != author && Order != title.";
+                Log("GetAllBooks", _logMessage, false);
                 return BadRequest(_logMessage);
             }
             else {
-
                 var books = await _bookRepository.GetAllBooksByValueAsync(order);
-                _logger.LogInformation(books.ToString());
-                // Sting Builder!!
-                return Ok(books.Select(book => _mapper.Map<BookDTO>(book)));
+                if(books.Count > 0) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    foreach (var book in books)
+                        stringBuilder.AppendLine(book.ToString());
+                    Log("GetAllBooks", stringBuilder.ToString(), true);
+
+                    return Ok(books.Select(book => _mapper.Map<BookDTO>(book)));
+                }
+                else {
+                    _logMessage = $"No books with order {order} founded.";
+                    Log("GetAllBooks", _logMessage, false);
+                    return BadRequest(_logMessage);
+                }
             }
         }
         [HttpGet("recommended")]
         public async Task<ActionResult<IEnumerable<Book>>> GetTop10Books(string? genre) {
-            _logger.LogInformation("Method: GetTop10Books");
             if (String.IsNullOrWhiteSpace(genre)) {
                 _logMessage = "Input genre of the books, please.";
-                _logger.LogError("\t" + _logMessage  + " Genre string is empty.");
+                Log("GetTop10Books", _logMessage + " Genre string is empty.", false);
                 return BadRequest(_logMessage);
             }
             else {
                 var books = await _bookRepository.GetTop10BooksByRatingAndReviewsAsync(genre);
-                // Log in console
-                StringBuilder stringBuilder = new StringBuilder();
-                var booksDTO = books.Select(book => _mapper.Map<BookDTO>(book));
-                foreach (var book in booksDTO)
-                    stringBuilder.AppendLine(book.ToString());
-                _logger.LogInformation("\t" + stringBuilder.ToString());
-
-                return Ok(booksDTO);
+                if(books.Count > 0) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    var booksDTO = books.Select(book => _mapper.Map<BookDTO>(book));
+                    foreach (var book in booksDTO)
+                        stringBuilder.AppendLine(book.ToString());
+                    Log("GetTop10Books", stringBuilder.ToString(), true);
+                    return Ok(booksDTO);
+                }
+                else {
+                    _logMessage = "Books was not found.";
+                    Log("GetTop10Books", _logMessage, false);
+                    return BadRequest(_logMessage);
+                }
             }
         }
         [HttpGet("books/{id}")]
         public async Task<ActionResult<IEnumerable<Book>>> GetBookById(int id) {
-            _logger.LogInformation("Method: GetBookById");
             var book = await _bookRepository.GetBookByIdAsync(id);
             if(book == null) {
-                _logMessage = $"Book with id {id} wasn't founded!";
-                _logger.LogError("\t" + _logMessage);
+                _logMessage = $"Book with id {id} was not found.";
+                Log("GetBookById", _logMessage, false);
                 return BadRequest(_logMessage);
             }
             else {
                 var bookDTO = _mapper.Map<BookWithReviewsDTO>(book);
-                _logger.LogInformation("\t" + bookDTO.ToString());
+                Log("GetBookById", bookDTO.ToString(), true);
                 return Ok(bookDTO);
             }
                 
         }
         [HttpDelete("books/{id}")]
         public async Task<ActionResult> DeleteBook(int id, string secret = "C# in my heart") {
-            _logger.LogInformation("Method: DeleteBook");
             if (secret != _configuration.GetValue<string>("SecretKey")) {
                 _logMessage = "Secret key was wrong!";
-                _logger.LogError("\t" + _logMessage);
+                Log("DeleteBook", _logMessage, false);
                 return BadRequest(_logMessage + " Try again.");
             }
             else {
@@ -91,58 +109,71 @@ namespace Task2.PL.Controllers {
                     bool success = await _bookRepository.DeleteBookAsync(id);
                     if (success) {
                         _logMessage = "Book was successfully deleted!";
-                        _logger.LogInformation($"\t{_logMessage} Id was {id}.");
+                        Log("DeleteBook", _logMessage + $" Id was {id}.", true);
                         return Ok(_logMessage);
                     }
                     else {
-                        _logMessage = "Current book was not founded!";
-                        _logger.LogError($"\t{_logMessage} Id was {id}.");
-                        return BadRequest("Current book was not founded!");
+                        _logMessage = "Current book was not found";
+                        Log("DeleteBook", _logMessage + $" Id was {id}.", false);
+                        return BadRequest(_logMessage);
                     }
                 }
                 catch (Exception ex) {
-                    _logger.LogError("\t" + ex.Message);
+                    Log("DeleteBook", ex.Message, false);
                     return BadRequest(ex.Message);
                 }
             }
         }
         [HttpPost("books/save")]
         public async Task<ActionResult> SaveBook(SaveBookDTO book) {
-            _logger.LogInformation("Method: SaveBook");
             if (book == null) {
-                _logger.LogError("\tInput data is null!");
+                Log("SaveBook", "Input data is null." + book?.ToString(), false);
                 return CreatedAtRoute("", new { id = -1 });
             }
             else {
                 int bookId = await _bookRepository.SaveBookAsync(_mapper.Map<Book>(book));
-                _logger.LogInformation("\tSuccessfully added\n" + book.ToString());
+                Log("SaveBook", "Successfully added: " + book.ToString(), true);
                 return CreatedAtRoute("", new { id = bookId });
             }
         }
         [HttpPut("books/{id}/review")]
         public async Task<ActionResult> SaveReview(int id, [FromBody] ReviewWithoutIdDTO review) {
-            _logger.LogInformation("Method: SaveReview");
             int reviewId = await _bookRepository.SaveReviewAsync(id, _mapper.Map<Review>(review));
             if (reviewId == -1) {
-                _logger.LogError("\tSaving review return id -1!");
+                Log("SaveReview", "tSaving review return id -1!", false);
                 return CreatedAtRoute("", new { id = -1 });
             }
             else {
-                _logger.LogInformation("\tSaved:" + review.ToString());
+                Log("SaveReview", "Saved: " + review.ToString(), true);
                 return CreatedAtRoute("", new { id = reviewId });
             }
         }
         [HttpPut("books/{id}/rate")]
         public async Task<ActionResult> RateBook([FromRoute] int id, [FromBody] RatingDTO rating) {
-            _logger.LogInformation("Method: RateBook");
             if (rating.Score < 1 || rating.Score > 5) {
-                _logger.LogError("\tRate score < 1 or > 5.");
+                Log("RateBook", "Rate score < 1 or > 5.", false);
                 return BadRequest($"Score must be between 1 and 5. Not {rating.Score}.");
             }
             else {
-                await _bookRepository.RateBook(id, rating.Score);
-                _logger.LogError("\tSaved:" + rating.ToString());
-                return Ok("Rate was successfully saved!");
+                bool success = await _bookRepository.RateBook(id, rating.Score);
+                if (success) {
+                    Log("RateBook", "Saved: " + rating.ToString(), true);
+                    return Ok("Rate was successfully saved!");
+                }
+                else {
+                    _logMessage = $"No book founded with id {id}";
+                    Log("RateBook", _logMessage, false);
+                    return BadRequest(_logMessage);
+                }
+            }
+        }
+        [NonAction]
+        private void Log(string method, string message, bool isSuccess) {
+            if(!isSuccess) {
+                _logger.LogError("Method:" + method + "\n\t" + message);
+            }
+            else {
+                _logger.LogInformation("Method:" + method + "\n\t" + message);
             }
         }
     }

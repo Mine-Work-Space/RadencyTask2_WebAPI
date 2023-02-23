@@ -10,14 +10,14 @@ namespace Task2.ModelsLibrary {
         public string Message { get; set; } = string.Empty;
         public string Reviewer { get; set; } = string.Empty;
         public override string ToString() {
-            return $"\n\t{{ ReviewDTO: {Id}, {Message}, {Reviewer} }}";
+            return $"\n\t{{ ReviewDTO: Id '{Id}', Message '{Message}', Reviewer '{Reviewer}' }}";
         }
     }
     public class ReviewWithoutIdDTO {
         public string Message { get; set; } = string.Empty;
         public string Reviewer { get; set; } = string.Empty;
         public override string ToString() {
-            return $"\n\t{{ ReviewWithoutIdDTO: {Message}, {Reviewer} }}";
+            return $"\n\t{{ ReviewWithoutIdDTO: Message '{Message}', Reviewer '{Reviewer}' }}";
         }
     }
 }
