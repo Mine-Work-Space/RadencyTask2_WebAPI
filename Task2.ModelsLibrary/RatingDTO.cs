@@ -7,5 +7,8 @@ using System.Threading.Tasks;
 namespace Task2.ModelsLibrary {
     public class RatingDTO {
         public decimal Score { get; set; } = 0.0M;
+        public override string ToString() {
+            return $"Score: {Score}";
+        }
     }
 }

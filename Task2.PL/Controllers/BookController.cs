@@ -30,13 +30,13 @@ namespace Task2.PL.Controllers {
         }
 
         [HttpGet("books")]
-        public async Task<ActionResult<IEnumerable<Book>>> GetAllBooks(string? order) {
+        public async Task<ActionResult<IEnumerable<Book>>> GetAllBooks(string? order = "title") {
             if (String.IsNullOrWhiteSpace(order)) {
                 _logMessage = "Input book title or author name.";
                 Log("GetAllBooks", _logMessage + " Order string is empty.", false);
                 return BadRequest(_logMessage);
             }
-            if(order != "author" || order != "title") { // !!
+            else if(order != "author" && order != "title") {
                 _logMessage = "Order != author && Order != title.";
                 Log("GetAllBooks", _logMessage, false);
                 return BadRequest(_logMessage);
@@ -44,12 +44,15 @@ namespace Task2.PL.Controllers {
             else {
                 var books = await _bookRepository.GetAllBooksByValueAsync(order);
                 if(books.Count > 0) {
+                    var booksDTO = books.Select(book => _mapper.Map<BookDTO>(book));
+
                     StringBuilder stringBuilder = new StringBuilder();
-                    foreach (var book in books)
+                    stringBuilder.AppendLine("Books count: " + booksDTO.Count());
+                    foreach (var book in booksDTO)
                         stringBuilder.AppendLine(book.ToString());
                     Log("GetAllBooks", stringBuilder.ToString(), true);
 
-                    return Ok(books.Select(book => _mapper.Map<BookDTO>(book)));
+                    return Ok(booksDTO);
                 }
                 else {
                     _logMessage = $"No books with order {order} founded.";
@@ -59,7 +62,7 @@ namespace Task2.PL.Controllers {
             }
         }
         [HttpGet("recommended")]
-        public async Task<ActionResult<IEnumerable<Book>>> GetTop10Books(string? genre) {
+        public async Task<ActionResult<IEnumerable<Book>>> GetTop10Books(string? genre = "Romance") {
             if (String.IsNullOrWhiteSpace(genre)) {
                 _logMessage = "Input genre of the books, please.";
                 Log("GetTop10Books", _logMessage + " Genre string is empty.", false);

@@ -17,8 +17,8 @@ namespace Task2.DAL {
                     " Unlike most schoolboys, Harry never enjoys his summer holidays, but this summer is even worse than usual." +
                     " The Dursleys, of course, are making his life a misery, but even his best friends, Ron and Hermione, seem to be neglecting him.",
                     Cover = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1546910265i/2.jpg",
-                    Genre = $"Fantasy",
-                    Title = $"Harry Potter and the Order of the Phoenix"
+                    Genre = "Fantasy",
+                    Title = "Harry Potter and the Order of the Phoenix"
                 },
                 new Book() {
                     Id = 2,
@@ -52,7 +52,7 @@ namespace Task2.DAL {
                     " print.\" The romantic clash between the opinionated Elizabeth and her proud beau, Mr. Darcy, is a" +
                     " splendid performance of civilized sparring. And Jane Austen's radiant wit sparkles as her characters " +
                     "dance a delicate quadrille of flirtation and intrigue, making this book the most superb comedy of manners " +
-                    "of Regency England.\r\n",
+                    "of Regency England.",
                     Cover = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320399351i/1885.jpg",
                     Genre = "Romance",
                     Title = "Pride and Prejudice"
