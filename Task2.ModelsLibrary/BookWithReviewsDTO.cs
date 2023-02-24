@@ -9,7 +9,16 @@ namespace Task2.ModelsLibrary {
         public int Id { get; set; } = -1;
         public string Title { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
+        public string Cover { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
         public decimal Rating { get; set; } = 0.0M;
         public IEnumerable<ReviewDTO> Reviews { get; set; } = new List<ReviewDTO>();
+        public override string ToString() {
+            StringBuilder sb = new StringBuilder();
+            foreach (ReviewDTO review in Reviews) {
+                sb.Append(review.ToString());
+            }
+            return $"{{ BookWithReviewsDTO: Id '{Id}', Title '{Title}', Author '{Author}', Cover '{Cover}', Content '{Content}', Rating '{Rating}' \n REVIEWS: " + sb.ToString() + "} ";
+        }
     }
 }
