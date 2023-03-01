@@ -12,6 +12,7 @@ namespace Task2.ModelsLibrary {
         public string Cover { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public decimal Rating { get; set; } = 0.0M;
+        public string Genre { get; set; } = string.Empty;
         public IEnumerable<ReviewDTO> Reviews { get; set; } = new List<ReviewDTO>();
         public override string ToString() {
             StringBuilder sb = new StringBuilder();

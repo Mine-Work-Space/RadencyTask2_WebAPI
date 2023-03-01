@@ -13,7 +13,7 @@ namespace Task2.ModelsLibrary {
         public string Genre { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
         public override string ToString() {
-            return $"{{ SaveBookDTO: Id '{Id}', Title '{Title}', Cover '{Cover}', Content '{Content}', Genre '{Genre}', Author '{Author}' }}";
+            return $"{{ SaveBookDTO: Id '{Id}', Title '{Title}', Content '{Content}', Genre '{Genre}', Author '{Author}' }}";
         }
     }
 }
